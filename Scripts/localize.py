@@ -32,7 +32,7 @@ class LocalizedString():
         self.key, self.value = re_translation.match(self.translation).groups()
 
     def __unicode__(self):
-        return u'%s%s\n' % (u''.join(self.comments), self.translation)
+        return u'{0!s}{1!s}\n'.format(u''.join(self.comments), self.translation)
 
 class LocalizedFile():
     def __init__(self, fname=None, auto_read=False):
@@ -48,7 +48,7 @@ class LocalizedFile():
         try:
             f = open(fname, encoding='utf_16', mode='r')
         except:
-            print 'File %s does not exist.' % fname
+            print 'File {0!s} does not exist.'.format(fname)
             exit(-1)
         
         line = f.readline()
@@ -67,7 +67,7 @@ class LocalizedFile():
             if line and re_translation.match(line):
                 translation = line
             else:
-                raise Exception('invalid file: %s' % line)
+                raise Exception('invalid file: {0!s}'.format(line))
             
             line = f.readline()
             while line and line == u'\n':
@@ -84,7 +84,7 @@ class LocalizedFile():
         try:
             f = open(fname, encoding='utf_16', mode='w')
         except:
-            print 'Couldn\'t open file %s.' % fname
+            print 'Couldn\'t open file {0!s}.'.format(fname)
             exit(-1)
 
         for string in self.strings:
@@ -111,7 +111,7 @@ def merge(merged_fname, old_fname, new_fname):
         old = LocalizedFile(old_fname, auto_read=True)
         new = LocalizedFile(new_fname, auto_read=True)
     except Exception as e:
-        print 'Error: input files have invalid format. old: %s, new: %s' % (old_fname, new_fname)
+        print 'Error: input files have invalid format. old: {0!s}, new: {1!s}'.format(old_fname, new_fname)
         print e
 
     merged = old.merge_with(new)
@@ -135,13 +135,13 @@ def localize(path):
 
     if os.path.isfile(original):
         os.rename(original, old)
-        os.system('genstrings -q -o "%s" `find . ../Pods/WordPress* ../Pods/WPMediaPicker -name "*.m" -o -name "*.swift" | grep -v Vendor`' % language)
+        os.system('genstrings -q -o "{0!s}" `find . ../Pods/WordPress* ../Pods/WPMediaPicker -name "*.m" -o -name "*.swift" | grep -v Vendor`'.format(language))
         os.rename(original, new)
         merge(merged, old, new)
         os.remove(new)
         os.remove(old)
     else:
-        os.system('genstrings -q -o "%s" `find . -name "*.m" -o -name "*.swift"` | grep -v Vendor' % language)
+        os.system('genstrings -q -o "{0!s}" `find . -name "*.m" -o -name "*.swift"` | grep -v Vendor'.format(language))
 
 if __name__ == '__main__':
     localize(os.path.join(os.getcwd(), 'WordPress'))
