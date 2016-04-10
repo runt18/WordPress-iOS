@@ -44,7 +44,7 @@ class LocalizedFile():
             self.read_from_file(fname)
 
     def read_from_file(self, fname=None):
-        fname = self.fname if fname == None else fname
+        fname = self.fname if fname is None else fname
         try:
             f = open(fname, encoding='utf_16', mode='r')
         except:
@@ -80,7 +80,7 @@ class LocalizedFile():
         f.close()
 
     def save_to_file(self, fname=None):
-        fname = self.fname if fname == None else fname
+        fname = self.fname if fname is None else fname
         try:
             f = open(fname, encoding='utf_16', mode='w')
         except:
